@@ -1,0 +1,209 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		100000000000000000000001 /* TournamentPlannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000001 /* TournamentPlannerApp.swift */; };
+		100000000000000000000002 /* Turnier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000002 /* Turnier.swift */; };
+		100000000000000000000003 /* PlanungsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000003 /* PlanungsEngine.swift */; };
+		100000000000000000000004 /* TurnierViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000004 /* TurnierViewModel.swift */; };
+		100000000000000000000005 /* PersistenzService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000005 /* PersistenzService.swift */; };
+		100000000000000000000006 /* PlanExportFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000006 /* PlanExportFormatter.swift */; };
+		100000000000000000000007 /* XLSXExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000007 /* XLSXExportService.swift */; };
+		100000000000000000000008 /* PDFExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000008 /* PDFExportService.swift */; };
+		100000000000000000000009 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000009 /* ContentView.swift */; };
+		10000000000000000000000A /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000000A /* SetupView.swift */; };
+		10000000000000000000000B /* SpielplanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000000B /* SpielplanView.swift */; };
+		10000000000000000000000C /* ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000000C /* ExportView.swift */; };
+		10000000000000000000000D /* GruppenListeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000000D /* GruppenListeView.swift */; };
+		10000000000000000000000E /* SportartenListeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000000E /* SportartenListeView.swift */; };
+		10000000000000000000000F /* ZeitslotListeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20000000000000000000000F /* ZeitslotListeView.swift */; };
+		100000000000000000000010 /* PaarungsZelleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000010 /* PaarungsZelleView.swift */; };
+		100000000000000000000011 /* PlanungsEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000011 /* PlanungsEngineTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		110000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 300000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 400000000000000000000001;
+			remoteInfo = TournamentPlanner;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		200000000000000000000001 /* TournamentPlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TournamentPlannerApp.swift; sourceTree = "<group>"; };
+		200000000000000000000002 /* Turnier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Turnier.swift; sourceTree = "<group>"; };
+		200000000000000000000003 /* PlanungsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanungsEngine.swift; sourceTree = "<group>"; };
+		200000000000000000000004 /* TurnierViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnierViewModel.swift; sourceTree = "<group>"; };
+		200000000000000000000005 /* PersistenzService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenzService.swift; sourceTree = "<group>"; };
+		200000000000000000000006 /* PlanExportFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanExportFormatter.swift; sourceTree = "<group>"; };
+		200000000000000000000007 /* XLSXExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XLSXExportService.swift; sourceTree = "<group>"; };
+		200000000000000000000008 /* PDFExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFExportService.swift; sourceTree = "<group>"; };
+		200000000000000000000009 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		20000000000000000000000A /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		20000000000000000000000B /* SpielplanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpielplanView.swift; sourceTree = "<group>"; };
+		20000000000000000000000C /* ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportView.swift; sourceTree = "<group>"; };
+		20000000000000000000000D /* GruppenListeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GruppenListeView.swift; sourceTree = "<group>"; };
+		20000000000000000000000E /* SportartenListeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportartenListeView.swift; sourceTree = "<group>"; };
+		20000000000000000000000F /* ZeitslotListeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeitslotListeView.swift; sourceTree = "<group>"; };
+		200000000000000000000010 /* PaarungsZelleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaarungsZelleView.swift; sourceTree = "<group>"; };
+		200000000000000000000011 /* PlanungsEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanungsEngineTests.swift; sourceTree = "<group>"; };
+		200000000000000000000012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		200000000000000000000013 /* TournamentPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TournamentPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		200000000000000000000014 /* TournamentPlannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TournamentPlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		210000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		210000000000000000000002 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		220000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				220000000000000000000002 /* TournamentPlanner */,
+				220000000000000000000009 /* TournamentPlannerTests */,
+				22000000000000000000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		220000000000000000000002 /* TournamentPlanner */ = {
+			isa = PBXGroup;
+			children = (
+				200000000000000000000001 /* TournamentPlannerApp.swift */,
+				220000000000000000000003 /* Model */,
+				220000000000000000000004 /* ViewModel */,
+				220000000000000000000005 /* Services */,
+				220000000000000000000006 /* Views */,
+				220000000000000000000008 /* Resources */,
+			);
+			path = TournamentPlanner;
+			sourceTree = "<group>";
+		};
+		220000000000000000000003 /* Model */ = {isa = PBXGroup; children = (200000000000000000000002, 200000000000000000000003); path = Model; sourceTree = "<group>"; };
+		220000000000000000000004 /* ViewModel */ = {isa = PBXGroup; children = (200000000000000000000004); path = ViewModel; sourceTree = "<group>"; };
+		220000000000000000000005 /* Services */ = {isa = PBXGroup; children = (200000000000000000000005, 200000000000000000000006, 200000000000000000000007, 200000000000000000000008); path = Services; sourceTree = "<group>"; };
+		220000000000000000000006 /* Views */ = {isa = PBXGroup; children = (200000000000000000000009, 20000000000000000000000A, 20000000000000000000000B, 20000000000000000000000C, 220000000000000000000007); path = Views; sourceTree = "<group>"; };
+		220000000000000000000007 /* Components */ = {isa = PBXGroup; children = (20000000000000000000000D, 20000000000000000000000E, 20000000000000000000000F, 200000000000000000000010); path = Components; sourceTree = "<group>"; };
+		220000000000000000000008 /* Resources */ = {isa = PBXGroup; children = (200000000000000000000012); path = Resources; sourceTree = "<group>"; };
+		220000000000000000000009 /* TournamentPlannerTests */ = {isa = PBXGroup; children = (200000000000000000000011); path = TournamentPlannerTests; sourceTree = "<group>"; };
+		22000000000000000000000A /* Products */ = {isa = PBXGroup; children = (200000000000000000000013, 200000000000000000000014); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		400000000000000000000001 /* TournamentPlanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 500000000000000000000001 /* Build configuration list for PBXNativeTarget "TournamentPlanner" */;
+			buildPhases = (600000000000000000000001, 210000000000000000000001, 600000000000000000000002);
+			buildRules = ();
+			dependencies = ();
+			name = TournamentPlanner;
+			productName = TournamentPlanner;
+			productReference = 200000000000000000000013 /* TournamentPlanner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		400000000000000000000002 /* TournamentPlannerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 500000000000000000000002 /* Build configuration list for PBXNativeTarget "TournamentPlannerTests" */;
+			buildPhases = (600000000000000000000003, 210000000000000000000002, 600000000000000000000004);
+			buildRules = ();
+			dependencies = (120000000000000000000001 /* PBXTargetDependency */);
+			name = TournamentPlannerTests;
+			productName = TournamentPlannerTests;
+			productReference = 200000000000000000000014 /* TournamentPlannerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		300000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					400000000000000000000001 = {CreatedOnToolsVersion = 16.0;};
+					400000000000000000000002 = {CreatedOnToolsVersion = 16.0; TestTargetID = 400000000000000000000001;};
+				};
+			};
+			buildConfigurationList = 500000000000000000000003 /* Build configuration list for PBXProject "TournamentPlanner" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = de;
+			hasScannedForEncodings = 0;
+			knownRegions = (de, en, Base);
+			mainGroup = 220000000000000000000001;
+			productRefGroup = 22000000000000000000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (400000000000000000000001, 400000000000000000000002);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		600000000000000000000002 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		600000000000000000000004 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		600000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (100000000000000000000001, 100000000000000000000002, 100000000000000000000003, 100000000000000000000004, 100000000000000000000005, 100000000000000000000006, 100000000000000000000007, 100000000000000000000008, 100000000000000000000009, 10000000000000000000000A, 10000000000000000000000B, 10000000000000000000000C, 10000000000000000000000D, 10000000000000000000000E, 10000000000000000000000F, 100000000000000000000010);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		600000000000000000000003 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000011); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		120000000000000000000001 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 400000000000000000000001 /* TournamentPlanner */; targetProxy = 110000000000000000000001 /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		700000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ANALYZER_NONNULL = YES; CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE; CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_ENABLE_OBJC_WEAK = YES; CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES; CLANG_WARN_BOOL_CONVERSION = YES; CLANG_WARN_COMMA = YES; CLANG_WARN_CONSTANT_CONVERSION = YES; CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES; CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR; CLANG_WARN_DOCUMENTATION_COMMENTS = YES; CLANG_WARN_EMPTY_BODY = YES; CLANG_WARN_ENUM_CONVERSION = YES; CLANG_WARN_INFINITE_RECURSION = YES; CLANG_WARN_INT_CONVERSION = YES; CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES; CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES; CLANG_WARN_OBJC_LITERAL_CONVERSION = YES; CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; CLANG_WARN_RANGE_LOOP_ANALYSIS = YES; CLANG_WARN_STRICT_PROTOTYPES = YES; CLANG_WARN_SUSPICIOUS_MOVE = YES; CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE; CLANG_WARN_UNREACHABLE_CODE = YES; CLANG_WARN__DUPLICATE_METHOD_MATCH = YES; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_STRICT_OBJC_MSGSEND = YES; ENABLE_TESTABILITY = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_DYNAMIC_NO_PIC = NO; GCC_NO_COMMON_BLOCKS = YES; GCC_OPTIMIZATION_LEVEL = 0; GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1", "$(inherited)"); GCC_WARN_64_TO_32_BIT_CONVERSION = YES; GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR; GCC_WARN_UNDECLARED_SELECTOR = YES; GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE; GCC_WARN_UNUSED_FUNCTION = YES; GCC_WARN_UNUSED_VARIABLE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE; MTL_FAST_MATH = YES; ONLY_ACTIVE_ARCH = YES; SDKROOT = macosx; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; };
+			name = Debug;
+		};
+		700000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ANALYZER_NONNULL = YES; CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE; CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_ENABLE_OBJC_WEAK = YES; CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES; CLANG_WARN_BOOL_CONVERSION = YES; CLANG_WARN_COMMA = YES; CLANG_WARN_CONSTANT_CONVERSION = YES; CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES; CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR; CLANG_WARN_DOCUMENTATION_COMMENTS = YES; CLANG_WARN_EMPTY_BODY = YES; CLANG_WARN_ENUM_CONVERSION = YES; CLANG_WARN_INFINITE_RECURSION = YES; CLANG_WARN_INT_CONVERSION = YES; CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES; CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES; CLANG_WARN_OBJC_LITERAL_CONVERSION = YES; CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; CLANG_WARN_RANGE_LOOP_ANALYSIS = YES; CLANG_WARN_STRICT_PROTOTYPES = YES; CLANG_WARN_SUSPICIOUS_MOVE = YES; CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE; CLANG_WARN_UNREACHABLE_CODE = YES; CLANG_WARN__DUPLICATE_METHOD_MATCH = YES; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_NS_ASSERTIONS = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_NO_COMMON_BLOCKS = YES; GCC_WARN_64_TO_32_BIT_CONVERSION = YES; GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR; GCC_WARN_UNDECLARED_SELECTOR = YES; GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE; GCC_WARN_UNUSED_FUNCTION = YES; GCC_WARN_UNUSED_VARIABLE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; MTL_ENABLE_DEBUG_INFO = NO; MTL_FAST_MATH = YES; SDKROOT = macosx; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_OPTIMIZATION_LEVEL = "-O"; };
+			name = Release;
+		};
+		700000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = TournamentPlanner/Resources/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks"); PRODUCT_BUNDLE_IDENTIFIER = ch.local.TournamentPlanner; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; };
+			name = Debug;
+		};
+		700000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = TournamentPlanner/Resources/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks"); PRODUCT_BUNDLE_IDENTIFIER = ch.local.TournamentPlanner; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; };
+			name = Release;
+		};
+		700000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks", "@loader_path/../Frameworks"); PRODUCT_BUNDLE_IDENTIFIER = ch.local.TournamentPlannerTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TournamentPlanner.app/Contents/MacOS/TournamentPlanner"; };
+			name = Debug;
+		};
+		700000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks", "@loader_path/../Frameworks"); PRODUCT_BUNDLE_IDENTIFIER = ch.local.TournamentPlannerTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TournamentPlanner.app/Contents/MacOS/TournamentPlanner"; };
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		500000000000000000000001 /* Build configuration list for PBXNativeTarget "TournamentPlanner" */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000003, 700000000000000000000004); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		500000000000000000000002 /* Build configuration list for PBXNativeTarget "TournamentPlannerTests" */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000005, 700000000000000000000006); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		500000000000000000000003 /* Build configuration list for PBXProject "TournamentPlanner" */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000001, 700000000000000000000002); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = 300000000000000000000001 /* Project object */;
+}
