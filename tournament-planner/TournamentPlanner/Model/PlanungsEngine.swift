@@ -155,6 +155,9 @@ struct PlanungsEngine {
         return nil
     }
 
+    // BR-005: Zweiphasiger Algorithmus.
+    // Phase 1 – Abdeckung: fehlende (Gruppe, Sportart)-Kombinationen schliessen.
+    // Phase 2 – Füllung: verbleibende leere Zellen mit minimalen Gegnerwiederholungen füllen.
     private func bauePlan(
         gruppen: [Gruppe],
         sportarten: [Sportart],
@@ -164,54 +167,77 @@ struct PlanungsEngine {
         var platziert: [Paarung] = []
         var teamsProZeitslot: [UUID: Set<UUID>] = [:]
         var teamSportGespielt: Set<TeamSportKey> = []
+        var belegteZellen: Set<ZellenSchluessel> = []
         var paarungZaehler: [PaarungsKey: Int] = [:]
 
-        let basisZellen = zeitslots.flatMap { zeitslot in
-            sportarten.map { sportart in Zelle(sportart: sportart, zeitslot: zeitslot) }
+        let alleGruppenPaarungen = allePaarungen(gruppen: zufaellig ? gruppen.shuffled() : gruppen)
+
+        func istPlatzierbar(_ paarung: Paarung, sportartId: UUID, zeitslotId: UUID) -> Bool {
+            let teamsInSlot = teamsProZeitslot[zeitslotId, default: []]
+            return !teamsInSlot.contains(paarung.gruppeAId)
+                && !teamsInSlot.contains(paarung.gruppeBId)
+                && !belegteZellen.contains(ZellenSchluessel(sportartId: sportartId, zeitslotId: zeitslotId))
         }
-        let zellen = zufaellig ? basisZellen.shuffled() : basisZellen
+
+        func platziere(_ paarung: Paarung, sportartId: UUID, zeitslotId: UUID) {
+            var p = paarung
+            p.sportartId = sportartId
+            p.zeitslotId = zeitslotId
+            platziert.append(p)
+            teamsProZeitslot[zeitslotId, default: []].insert(p.gruppeAId)
+            teamsProZeitslot[zeitslotId, default: []].insert(p.gruppeBId)
+            teamSportGespielt.insert(TeamSportKey(gruppeId: p.gruppeAId, sportartId: sportartId))
+            teamSportGespielt.insert(TeamSportKey(gruppeId: p.gruppeBId, sportartId: sportartId))
+            belegteZellen.insert(ZellenSchluessel(sportartId: sportartId, zeitslotId: zeitslotId))
+            paarungZaehler[PaarungsKey(paarung), default: 0] += 1
+        }
+
+        // Phase 1 – Abdeckung (BR-005)
+        var abdeckungsLuecken = gruppen.flatMap { gruppe in
+            sportarten.map { sportart in TeamSportKey(gruppeId: gruppe.id, sportartId: sportart.id) }
+        }
+        if zufaellig { abdeckungsLuecken.shuffle() }
+
+        let verfuegbareZeitslots = zufaellig ? zeitslots.shuffled() : zeitslots
+
+        for luecke in abdeckungsLuecken {
+            guard !teamSportGespielt.contains(luecke) else { continue }
+
+            var besteOption: (paarung: Paarung, zeitslotId: UUID, synergie: Int)?
+
+            outerLoop: for zeitslot in verfuegbareZeitslots {
+                for paarung in alleGruppenPaarungen where paarung.contains(gruppeId: luecke.gruppeId) {
+                    guard istPlatzierbar(paarung, sportartId: luecke.sportartId, zeitslotId: zeitslot.id) else { continue }
+                    let synergie = [
+                        TeamSportKey(gruppeId: paarung.gruppeAId, sportartId: luecke.sportartId),
+                        TeamSportKey(gruppeId: paarung.gruppeBId, sportartId: luecke.sportartId)
+                    ].filter { !teamSportGespielt.contains($0) }.count
+                    if besteOption == nil || synergie > besteOption!.synergie {
+                        besteOption = (paarung, zeitslot.id, synergie)
+                    }
+                    if synergie == 2 { break outerLoop }
+                }
+            }
+
+            if let option = besteOption {
+                platziere(option.paarung, sportartId: luecke.sportartId, zeitslotId: option.zeitslotId)
+            }
+        }
+
+        // Phase 2 – Füllung (BR-005)
+        let zellen: [(sportartId: UUID, zeitslotId: UUID)] = {
+            let basis = zeitslots.flatMap { z in sportarten.map { s in (sportartId: s.id, zeitslotId: z.id) } }
+            return zufaellig ? basis.shuffled() : basis
+        }()
 
         for zelle in zellen {
-            let kandidaten = allePaarungen(gruppen: zufaellig ? gruppen.shuffled() : gruppen).enumerated().compactMap { index, paarung -> BewerteterKandidat? in
-                let teamsInSlot = teamsProZeitslot[zelle.zeitslot.id, default: []]
-                guard !teamsInSlot.contains(paarung.gruppeAId), !teamsInSlot.contains(paarung.gruppeBId) else {
-                    return nil
-                }
-
-                let sportA = TeamSportKey(gruppeId: paarung.gruppeAId, sportartId: zelle.sportart.id)
-                let sportB = TeamSportKey(gruppeId: paarung.gruppeBId, sportartId: zelle.sportart.id)
-                let neueSportarten = [sportA, sportB].filter { !teamSportGespielt.contains($0) }.count
-                let wiederholungen = paarungZaehler[PaarungsKey(paarung), default: 0]
-                return BewerteterKandidat(
-                    paarung: paarung,
-                    neueSportarten: neueSportarten,
-                    wiederholungen: wiederholungen,
-                    reihenfolge: index
-                )
+            guard !belegteZellen.contains(ZellenSchluessel(sportartId: zelle.sportartId, zeitslotId: zelle.zeitslotId)) else { continue }
+            let kandidaten = alleGruppenPaarungen.filter { istPlatzierbar($0, sportartId: zelle.sportartId, zeitslotId: zelle.zeitslotId) }
+            if let kandidat = kandidaten.min(by: {
+                paarungZaehler[PaarungsKey($0), default: 0] < paarungZaehler[PaarungsKey($1), default: 0]
+            }) {
+                platziere(kandidat, sportartId: zelle.sportartId, zeitslotId: zelle.zeitslotId)
             }
-
-            guard let kandidat = kandidaten.min(by: { links, rechts in
-                if links.neueSportarten != rechts.neueSportarten {
-                    return links.neueSportarten > rechts.neueSportarten
-                }
-                if links.wiederholungen != rechts.wiederholungen {
-                    return links.wiederholungen < rechts.wiederholungen
-                }
-                return links.reihenfolge < rechts.reihenfolge
-            }) else {
-                continue
-            }
-
-            var paarung = kandidat.paarung
-            paarung.sportartId = zelle.sportart.id
-            paarung.zeitslotId = zelle.zeitslot.id
-            platziert.append(paarung)
-
-            teamsProZeitslot[zelle.zeitslot.id, default: []].insert(paarung.gruppeAId)
-            teamsProZeitslot[zelle.zeitslot.id, default: []].insert(paarung.gruppeBId)
-            teamSportGespielt.insert(TeamSportKey(gruppeId: paarung.gruppeAId, sportartId: zelle.sportart.id))
-            teamSportGespielt.insert(TeamSportKey(gruppeId: paarung.gruppeBId, sportartId: zelle.sportart.id))
-            paarungZaehler[PaarungsKey(paarung), default: 0] += 1
         }
 
         return platziert.sorted { links, rechts in
@@ -255,6 +281,11 @@ struct TeamSportKey: Codable, Hashable {
     let sportartId: UUID
 }
 
+private struct ZellenSchluessel: Hashable {
+    let sportartId: UUID
+    let zeitslotId: UUID
+}
+
 private struct PaarungsKey: Hashable {
     let first: UUID
     let second: UUID
@@ -264,18 +295,6 @@ private struct PaarungsKey: Hashable {
         first = UUID(uuidString: sortiert[0]) ?? paarung.gruppeAId
         second = UUID(uuidString: sortiert[1]) ?? paarung.gruppeBId
     }
-}
-
-private struct Zelle {
-    let sportart: Sportart
-    let zeitslot: Zeitslot
-}
-
-private struct BewerteterKandidat {
-    let paarung: Paarung
-    let neueSportarten: Int
-    let wiederholungen: Int
-    let reihenfolge: Int
 }
 
 private struct PlanBewertung: Comparable {

@@ -30,7 +30,7 @@ ITAM-Application: TournamentPlanner
 
 ## Context & Background
 
-> Der Spielplan ist ein zweidimensionales Raster: Die X-Achse zeigt die Sportarten, die Y-Achse die Zeitslots. Jede Zelle enthält eine Begegnung zweier Gruppen. Die Planungs-Engine optimiert nach festen Prioritäten: Erst darf keine Gruppe im selben Zeitslot zweimal spielen, dann soll jede Gruppe jede Sportart mindestens einmal spielen, danach sollen möglichst viele Felder gefüllt werden, und erst zuletzt sollen Gegnerwiederholungen vermieden werden.
+> Der Spielplan ist ein zweidimensionales Raster: Die X-Achse zeigt die Sportarten, die Y-Achse die Zeitslots. Jede Zelle enthält eine Begegnung zweier Gruppen. Die Planungs-Engine optimiert den Spielplan nach einem zweiphasigen Verfahren gemäß [BR-005 – Spielplan-Priorisierung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-4c5d-7e6f-1a2b-3c4d5e6f7a8n:req/v1): In Phase 1 wird die Sportarten-Abdeckung maximiert (jede Gruppe soll jede Sportart mindestens einmal spielen), in Phase 2 werden verbleibende Zellen aufgefüllt. Zeitslot-Konflikte sind in beiden Phasen verboten (BR-004).
 
 ---
 
@@ -49,11 +49,7 @@ ITAM-Application: TournamentPlanner
 ## Description
 
 1. Die Planungs-Engine berechnet alle möglichen Gruppenpaarungen als Kandidaten.
-2. Die Planungs-Engine verteilt Kandidaten auf die verfügbaren Zellen des Rasters (Sportart × Zeitslot) nach dieser Priorität:
-   1. Eine Gruppe darf im selben Zeitslot höchstens einmal spielen.
-   2. Jede Gruppe soll jede Sportart mindestens einmal spielen.
-   3. Möglichst viele Felder sollen gefüllt werden.
-   4. Gegnerwiederholungen sollen minimiert werden.
+2. Die Planungs-Engine verteilt Kandidaten auf die verfügbaren Zellen des Rasters (Sportart × Zeitslot) gemäß dem zweiphasigen Verfahren in [BR-005 – Spielplan-Priorisierung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-4c5d-7e6f-1a2b-3c4d5e6f7a8n:req/v1); Zeitslot-Konflikte sind in beiden Phasen ausgeschlossen ([BR-004](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-2c3d-7e4f-9a5b-1c6d7e8f9a0m:req/v1)).
 3. Die Applikation zeigt das befüllte Spielplanraster an: Spalten = Sportarten, Zeilen = Zeitslots, Zellinhalt = «Gruppe A vs. Gruppe B».
 4. Freie Zellen (keine Paarung zugewiesen) werden als leer dargestellt.
 5. Der Turnierleiter prüft den Spielplan visuell.
@@ -108,10 +104,9 @@ ITAM-Application: TournamentPlanner
 ### Success
 
 - Ein `Spielplan`-Objekt ist im Applikationsspeicher vorhanden und wird auf dem Screen dargestellt.
-- Keine Gruppe ist im selben Zeitslot mehr als einmal eingeplant.
-- Jede Gruppe spielt jede Sportart bei passenden Eingabedaten mindestens einmal.
-- Nach der Sportarten-Mindestabdeckung werden möglichst viele Felder gefüllt.
-- Gegnerwiederholungen werden minimiert, sind aber zulässig.
+- Der Spielplan entspricht [BR-005 – Spielplan-Priorisierung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-4c5d-7e6f-1a2b-3c4d5e6f7a8n:req/v1): Phase 1 maximiert die Sportarten-Abdeckung, Phase 2 füllt verbleibende Zellen.
+- Keine Gruppe ist im selben Zeitslot mehr als einmal eingeplant ([BR-004](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-2c3d-7e4f-9a5b-1c6d7e8f9a0m:req/v1)).
+- Gegnerwiederholungen sind zulässig, werden aber minimiert.
 
 ### Failure / Abort
 
@@ -159,6 +154,6 @@ Scenario: Konflikt bei manuellem Verschieben
 ## Dependencies & References
 
 - **Affected Data Objects**: [DO-001 – Turnier](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-2c3d-7e4f-9a5b-1c6d7e8f9a0c:req/v1), [DO-005 – Spielplan](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-9c0d-7e1f-6a2b-8c3d4e5f6a7j:req/v1), [DO-006 – Paarung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-0c1d-7e2f-7a3b-9c4d5e6f7a8k:req/v1)
-- **Applied Business Rules**: [BR-003 – Sportarten-Abdeckung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-1c2d-7e3f-8a4b-0c5d6e7f8a9l:req/v1), [BR-004 – Gruppe-Zeitslot-Konflikt](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-2c3d-7e4f-9a5b-1c6d7e8f9a0m:req/v1)
+- **Applied Business Rules**: [BR-003 – Sportarten-Abdeckung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-1c2d-7e3f-8a4b-0c5d6e7f8a9l:req/v1), [BR-004 – Gruppe-Zeitslot-Konflikt](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-2c3d-7e4f-9a5b-1c6d7e8f9a0m:req/v1), [BR-005 – Spielplan-Priorisierung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-4c5d-7e6f-1a2b-3c4d5e6f7a8n:req/v1)
 - **Depends on**: [UC-001 – Erfassen-Turnierdaten](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-1c2d-7e3f-8a4b-0c5d6e7f8a9b:req/v1)
 - **Included Use Cases**: [UC-003 – Exportieren-Spielplan](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-3c4d-7e5f-0a6b-2c7d8e9f0a1n:req/v1)
