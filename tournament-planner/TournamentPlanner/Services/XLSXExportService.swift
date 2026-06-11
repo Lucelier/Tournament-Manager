@@ -60,9 +60,9 @@ struct XLSXExportService {
         var rows: [String] = []
         var headerCells = [cell("A1", "", style: 1)]
         for (index, sportart) in formatter.sportarten.enumerated() {
-            headerCells.append(cell(columnName(index + 2) + "1", sportart.name, style: 1))
+            headerCells.append(cell(columnName(index + 2) + "1", formatter.spaltenTitel(fuer: sportart), style: 1))
         }
-        rows.append("<row r=\"1\">\(headerCells.joined())</row>")
+        rows.append("<row r=\"1\" ht=\"30\" customHeight=\"1\">\(headerCells.joined())</row>")
 
         for (rowIndex, zeitslot) in formatter.zeitslots.enumerated() {
             let row = rowIndex + 2
@@ -74,9 +74,17 @@ struct XLSXExportService {
             rows.append("<row r=\"\(row)\">\(cells.joined())</row>")
         }
 
+        let signaturRow = formatter.zeitslots.count + 3
+        rows.append("<row r=\"\(signaturRow)\">\(cell("A\(signaturRow)", "contributed by Luc Rossier", style: 0))</row>")
+
+        let letzteSpalte = max(2, formatter.sportarten.count + 1)
         return """
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
         <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+          <cols>
+            <col min="1" max="1" width="16" customWidth="1"/>
+            <col min="2" max="\(letzteSpalte)" width="26" customWidth="1"/>
+          </cols>
           <sheetData>
             \(rows.joined(separator: "\n"))
           </sheetData>
@@ -155,7 +163,7 @@ struct XLSXExportService {
           <fills count="1"><fill><patternFill patternType="none"/></fill></fills>
           <borders count="2"><border/><border><left style="thin"/><right style="thin"/><top style="thin"/><bottom style="thin"/></border></borders>
           <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
-          <cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="1" applyFont="1" applyBorder="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyBorder="1"/></cellXfs>
+          <cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="1" applyFont="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf></cellXfs>
         </styleSheet>
         """
     }

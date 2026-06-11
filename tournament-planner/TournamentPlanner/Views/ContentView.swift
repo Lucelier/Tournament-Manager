@@ -4,13 +4,17 @@ struct ContentView: View {
     @EnvironmentObject private var viewModel: TurnierViewModel
 
     var body: some View {
-        Group {
-            switch viewModel.aktuelleAnsicht {
-            case .setup:
-                SetupView()
-            case .spielplan:
-                SpielplanView()
+        VStack(spacing: 0) {
+            Group {
+                switch viewModel.aktuelleAnsicht {
+                case .setup:
+                    SetupView()
+                case .spielplan:
+                    SpielplanView()
+                }
             }
+            .frame(maxHeight: .infinity)
+            signatur
         }
         .alert("Hinweis", isPresented: alertBinding) {
             Button("OK") {
@@ -19,6 +23,15 @@ struct ContentView: View {
         } message: {
             Text(viewModel.alertText ?? "")
         }
+    }
+
+    private var signatur: some View {
+        Text("contributed by Luc Rossier")
+            .font(.caption2)
+            .foregroundStyle(.tertiary)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.vertical, 3)
+            .background(Color(nsColor: .windowBackgroundColor))
     }
 
     private var alertBinding: Binding<Bool> {

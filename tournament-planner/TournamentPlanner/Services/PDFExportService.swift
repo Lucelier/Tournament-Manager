@@ -1,99 +1,182 @@
 import AppKit
 import Foundation
-import PDFKit
 
 struct PDFExportService {
+    private enum Layout {
+        static let seitenGroesse = CGRect(x: 0, y: 0, width: 842, height: 595) // A4 Querformat
+        static let rand: CGFloat = 28
+        static let titelBereich: CGFloat = 50
+        static let kopfzeilenHoehe: CGFloat = 40
+        static let zeilenHoehe: CGFloat = 30
+        static let kopfFuellung = NSColor(white: 0.93, alpha: 1)
+        static let gitterFarbe = NSColor(white: 0.6, alpha: 1)
+    }
+
+    var zeilenProSeite: Int {
+        let nutzbareHoehe = Layout.seitenGroesse.height
+            - Layout.rand * 2
+            - Layout.titelBereich
+            - Layout.kopfzeilenHoehe
+        return max(1, Int(nutzbareHoehe / Layout.zeilenHoehe))
+    }
+
     func exportiere(turnier: Turnier, nach zielURL: URL) throws {
         let formatter = PlanExportFormatter(turnier: turnier)
-        let pageRect = CGRect(x: 0, y: 0, width: 842, height: 595)
+        var mediaBox = Layout.seitenGroesse
         let data = NSMutableData()
 
         guard let consumer = CGDataConsumer(data: data as CFMutableData),
-              let context = CGContext(consumer: consumer, mediaBox: nil, nil) else {
+              let context = CGContext(consumer: consumer, mediaBox: &mediaBox, nil) else {
             throw CocoaError(.fileWriteUnknown)
         }
 
-        context.beginPDFPage([kCGPDFContextMediaBox as String: pageRect] as CFDictionary)
-        NSGraphicsContext.saveGraphicsState()
-        NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
-
-        zeichne(formatter: formatter, in: pageRect)
-
-        NSGraphicsContext.restoreGraphicsState()
-        context.endPDFPage()
+        let seiten = aufgeteilteZeitslots(formatter.zeitslots)
+        for (seitenIndex, zeitslots) in seiten.enumerated() {
+            context.beginPDFPage(nil)
+            NSGraphicsContext.saveGraphicsState()
+            NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
+            zeichneSeite(
+                formatter: formatter,
+                zeitslots: zeitslots,
+                seite: seitenIndex + 1,
+                seitenGesamt: seiten.count
+            )
+            NSGraphicsContext.restoreGraphicsState()
+            context.endPDFPage()
+        }
         context.closePDF()
         try data.write(to: zielURL, options: .atomic)
     }
 
-    private func zeichne(formatter: PlanExportFormatter, in pageRect: CGRect) {
-        let margin: CGFloat = 28
-        let titleAttributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.boldSystemFont(ofSize: 18),
-            .foregroundColor: NSColor.labelColor
-        ]
-        let smallAttributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 10),
-            .foregroundColor: NSColor.secondaryLabelColor
-        ]
+    private func aufgeteilteZeitslots(_ zeitslots: [Zeitslot]) -> [[Zeitslot]] {
+        guard !zeitslots.isEmpty else { return [[]] }
+        return stride(from: 0, to: zeitslots.count, by: zeilenProSeite).map {
+            Array(zeitslots[$0..<min($0 + zeilenProSeite, zeitslots.count)])
+        }
+    }
 
-        let title = formatter.turnier.name.isEmpty ? "Spielplan" : formatter.turnier.name
-        title.draw(at: CGPoint(x: margin, y: pageRect.height - margin - 20), withAttributes: titleAttributes)
+    private func zeichneSeite(
+        formatter: PlanExportFormatter,
+        zeitslots: [Zeitslot],
+        seite: Int,
+        seitenGesamt: Int
+    ) {
+        let seitenRect = Layout.seitenGroesse
+
+        let titel = formatter.turnier.name.isEmpty ? "Spielplan" : formatter.turnier.name
+        titel.draw(
+            at: CGPoint(x: Layout.rand, y: seitenRect.height - Layout.rand - 20),
+            withAttributes: [
+                .font: NSFont.boldSystemFont(ofSize: 16),
+                .foregroundColor: NSColor.black
+            ]
+        )
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .none
-        "Exportiert am \(dateFormatter.string(from: Date()))"
-            .draw(at: CGPoint(x: margin, y: pageRect.height - margin - 38), withAttributes: smallAttributes)
+        var untertitel = "Exportiert am \(dateFormatter.string(from: Date()))"
+        if seitenGesamt > 1 {
+            untertitel += " – Seite \(seite) von \(seitenGesamt)"
+        }
+        untertitel.draw(
+            at: CGPoint(x: Layout.rand, y: seitenRect.height - Layout.rand - 36),
+            withAttributes: [
+                .font: NSFont.systemFont(ofSize: 9),
+                .foregroundColor: NSColor.darkGray
+            ]
+        )
 
-        let tableTop = pageRect.height - margin - 64
-        let tableHeight = tableTop - margin
-        let rowCount = max(formatter.zeitslots.count + 1, 1)
-        let columnCount = max(formatter.sportarten.count + 1, 1)
-        let cellWidth = (pageRect.width - margin * 2) / CGFloat(columnCount)
-        let cellHeight = min(34, tableHeight / CGFloat(rowCount))
-        let fontSize = max(7, min(11, cellHeight * 0.32))
+        let signatur = "contributed by Luc Rossier"
+        let signaturAttribute: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 7),
+            .foregroundColor: NSColor.gray
+        ]
+        let signaturBreite = signatur.size(withAttributes: signaturAttribute).width
+        signatur.draw(
+            at: CGPoint(x: seitenRect.width - Layout.rand - signaturBreite, y: Layout.rand * 0.35),
+            withAttributes: signaturAttribute
+        )
 
-        for row in 0..<rowCount {
-            for column in 0..<columnCount {
-                let rect = CGRect(
-                    x: margin + CGFloat(column) * cellWidth,
-                    y: tableTop - CGFloat(row + 1) * cellHeight,
-                    width: cellWidth,
-                    height: cellHeight
-                )
-                NSColor.gridColor.setStroke()
-                NSBezierPath(rect: rect).stroke()
+        let spalten = formatter.sportarten.count + 1
+        let spaltenBreite = (seitenRect.width - Layout.rand * 2) / CGFloat(spalten)
+        let tabellenOberkante = seitenRect.height - Layout.rand - Layout.titelBereich
 
-                let isHeader = row == 0 || column == 0
-                if isHeader {
-                    NSColor.controlBackgroundColor.setFill()
-                    NSBezierPath(rect: rect).fill()
-                }
+        for spalte in 0..<spalten {
+            let rect = CGRect(
+                x: Layout.rand + CGFloat(spalte) * spaltenBreite,
+                y: tabellenOberkante - Layout.kopfzeilenHoehe,
+                width: spaltenBreite,
+                height: Layout.kopfzeilenHoehe
+            )
+            fuelleZelle(rect, hintergrund: Layout.kopfFuellung)
+            guard spalte > 0 else { continue }
 
-                let text: String
-                if row == 0 && column == 0 {
-                    text = ""
-                } else if row == 0 {
-                    text = formatter.sportarten[column - 1].name
-                } else if column == 0 {
-                    text = formatter.zeitslots[row - 1].anzeigeText
-                } else {
-                    text = formatter.zellenText(
-                        sportartId: formatter.sportarten[column - 1].id,
-                        zeitslotId: formatter.zeitslots[row - 1].id
-                    )
-                }
-
-                let attributes: [NSAttributedString.Key: Any] = [
-                    .font: isHeader ? NSFont.boldSystemFont(ofSize: fontSize) : NSFont.systemFont(ofSize: fontSize),
-                    .foregroundColor: NSColor.labelColor
-                ]
-                text.draw(
-                    with: rect.insetBy(dx: 5, dy: 5),
-                    options: [.usesLineFragmentOrigin, .truncatesLastVisibleLine],
-                    attributes: attributes
-                )
+            let sportart = formatter.sportarten[spalte - 1]
+            let standort = sportart.standort?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            if standort.isEmpty {
+                zeichneZentriert(sportart.name, in: rect, font: .boldSystemFont(ofSize: 10), farbe: .black)
+            } else {
+                let obereHaelfte = CGRect(x: rect.minX, y: rect.midY - 2, width: rect.width, height: rect.height / 2)
+                let untereHaelfte = CGRect(x: rect.minX, y: rect.minY + 2, width: rect.width, height: rect.height / 2)
+                zeichneZentriert(sportart.name, in: obereHaelfte, font: .boldSystemFont(ofSize: 10), farbe: .black)
+                zeichneZentriert(standort, in: untereHaelfte, font: .systemFont(ofSize: 8), farbe: .darkGray)
             }
         }
+
+        for (zeilenIndex, zeitslot) in zeitslots.enumerated() {
+            let zeilenOberkante = tabellenOberkante - Layout.kopfzeilenHoehe - CGFloat(zeilenIndex) * Layout.zeilenHoehe
+            for spalte in 0..<spalten {
+                let rect = CGRect(
+                    x: Layout.rand + CGFloat(spalte) * spaltenBreite,
+                    y: zeilenOberkante - Layout.zeilenHoehe,
+                    width: spaltenBreite,
+                    height: Layout.zeilenHoehe
+                )
+                if spalte == 0 {
+                    fuelleZelle(rect, hintergrund: Layout.kopfFuellung)
+                    zeichneZentriert(zeitslot.anzeigeText, in: rect, font: .boldSystemFont(ofSize: 9), farbe: .black)
+                } else {
+                    fuelleZelle(rect, hintergrund: .white)
+                    let text = formatter.zellenText(
+                        sportartId: formatter.sportarten[spalte - 1].id,
+                        zeitslotId: zeitslot.id
+                    )
+                    zeichneZentriert(text, in: rect, font: .systemFont(ofSize: 9), farbe: .black)
+                }
+            }
+        }
+    }
+
+    private func fuelleZelle(_ rect: CGRect, hintergrund: NSColor) {
+        hintergrund.setFill()
+        NSBezierPath(rect: rect).fill()
+        Layout.gitterFarbe.setStroke()
+        NSBezierPath(rect: rect).stroke()
+    }
+
+    private func zeichneZentriert(_ text: String, in rect: CGRect, font: NSFont, farbe: NSColor) {
+        guard !text.isEmpty else { return }
+        let absatz = NSMutableParagraphStyle()
+        absatz.alignment = .center
+        absatz.lineBreakMode = .byTruncatingTail
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: farbe,
+            .paragraphStyle: absatz
+        ]
+        let inhalt = rect.insetBy(dx: 3, dy: 0)
+        let textHoehe = text.boundingRect(
+            with: CGSize(width: inhalt.width, height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin],
+            attributes: attributes
+        ).height
+        let textRect = CGRect(
+            x: inhalt.minX,
+            y: inhalt.midY - textHoehe / 2,
+            width: inhalt.width,
+            height: textHoehe
+        )
+        text.draw(with: textRect, options: [.usesLineFragmentOrigin, .truncatesLastVisibleLine], attributes: attributes)
     }
 }

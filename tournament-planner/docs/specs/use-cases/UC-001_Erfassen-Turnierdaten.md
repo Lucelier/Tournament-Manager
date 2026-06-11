@@ -51,8 +51,8 @@ ITAM-Application: TournamentPlanner
 2. Der Turnierleiter gibt die Anzahl Gruppen ein (Mindestwert: 2).
 3. Die Applikation generiert entsprechend viele benennbare Gruppenfelder.
 4. Der Turnierleiter vergibt jeweils einen eindeutigen Namen pro Gruppe.
-5. Der Turnierleiter fügt eine oder mehrere Sportarten mit Namen hinzu.
-6. Der Turnierleiter fügt einen oder mehrere Zeitslots hinzu (Bezeichnung, optionaler Start- und Endzeitpunkt).
+5. Der Turnierleiter fügt eine oder mehrere Sportarten hinzu (Name, optionaler Standort).
+6. Der Turnierleiter fügt einen oder mehrere Zeitslots hinzu (Startzeitpunkt, optionaler Endzeitpunkt).
 7. Der Turnierleiter klickt auf «Spielplan erstellen» *(→ UC-002)*.
 
 ---

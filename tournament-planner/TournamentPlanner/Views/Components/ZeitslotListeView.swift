@@ -45,33 +45,18 @@ private struct ZeitslotRowView: View {
     let remove: () -> Void
 
     var body: some View {
-        VStack(spacing: 6) {
-            HStack {
-                TextField("Bezeichnung", text: $zeitslot.bezeichnung)
-                    .textFieldStyle(.roundedBorder)
-                Button {
-                    remove()
-                } label: {
-                    Image(systemName: "minus.circle")
-                }
-                .buttonStyle(.borderless)
-                .disabled(!canRemove)
+        HStack {
+            TextField("Start", text: $zeitslot.startzeit)
+                .textFieldStyle(.roundedBorder)
+            TextField("Ende", text: $zeitslot.endzeit)
+                .textFieldStyle(.roundedBorder)
+            Button {
+                remove()
+            } label: {
+                Image(systemName: "minus.circle")
             }
-            HStack {
-                TextField("Start", text: Binding($zeitslot.startzeit, replacingNilWith: ""))
-                    .textFieldStyle(.roundedBorder)
-                TextField("Ende", text: Binding($zeitslot.endzeit, replacingNilWith: ""))
-                    .textFieldStyle(.roundedBorder)
-            }
+            .buttonStyle(.borderless)
+            .disabled(!canRemove)
         }
-    }
-}
-
-private extension Binding where Value == String {
-    init(_ source: Binding<String?>, replacingNilWith defaultValue: String) {
-        self.init(
-            get: { source.wrappedValue ?? defaultValue },
-            set: { source.wrappedValue = $0.isEmpty ? nil : $0 }
-        )
     }
 }

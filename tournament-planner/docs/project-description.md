@@ -75,8 +75,8 @@ TournamentPlanner/
 Der Benutzer konfiguriert:
 1. **Turniername** (Textfeld, Pflicht)
 2. **Gruppen**: Dynamische Liste; «+»-Button fügt eine neue Gruppe hinzu; jede Gruppe hat ein Namensfeld; «-»-Button entfernt sie. Mindestens 2 Gruppen.
-3. **Sportarten**: Dynamische Liste; «+»-Button fügt Sportart hinzu; jede Sportart hat ein Namensfeld. Mindestens 1.
-4. **Zeitslots**: Dynamische Liste; jeder Zeitslot hat Bezeichnung (Pflicht), optionale Start- und Endzeit (HH:mm). Mindestens 1.
+3. **Sportarten**: Dynamische Liste; «+»-Button fügt Sportart hinzu; jede Sportart hat ein Namensfeld und ein optionales Standortfeld. Mindestens 1.
+4. **Zeitslots**: Dynamische Liste; jeder Zeitslot hat eine Startzeit (Pflicht) und eine optionale Endzeit (HH:mm). Mindestens 1.
 
 **Validierung (live, während der Eingabe):**
 - Gruppenname darf nicht doppelt vorkommen (case-insensitive) → rotes Feld + Fehlermeldung
@@ -99,8 +99,8 @@ Der Benutzer konfiguriert:
 
 **Darstellung:**
 - SwiftUI `Grid` oder `LazyVGrid` / `Table`
-- Spaltenköpfe: Sportartnamen (fett)
-- Zeilenköpfe: Zeitslotbezeichnungen (fett)
+- Spaltenköpfe: Sportartnamen (fett), darunter klein der Standort (falls erfasst)
+- Zeilenköpfe: Zeitangaben der Zeitslots (fett)
 - Zellinhalt: «[Gruppe A] vs [Gruppe B]» oder Leerdarstellung
 - Nicht platzierte Paarungen: separate Liste unterhalb des Rasters («Nicht eingeplant»)
 
@@ -126,8 +126,8 @@ Der Benutzer konfiguriert:
 
 **XLSX-Format:**
 - Tabellenblatt «Spielplan»
-- Zeile 1: leere Zelle (A1) + Sportartnamen als Spaltenköpfe (B1, C1, …)
-- Spalte A: Zeitslotbezeichnungen (A2, A3, …)
+- Zeile 1: leere Zelle (A1) + Sportartnamen mit Standort in Klammern als Spaltenköpfe (B1, C1, …)
+- Spalte A: Zeitangaben der Zeitslots (A2, A3, …)
 - Inhalt: «Gruppe A vs. Gruppe B» oder leer
 - Kopfzeile und Kopfspalte: fett; Zellen mit Paarungen: dünner Rahmen
 

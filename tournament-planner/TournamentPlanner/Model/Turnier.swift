@@ -18,7 +18,7 @@ struct Turnier: Codable, Identifiable, Equatable {
             Gruppe(name: "B", reihenfolge: 1)
         ],
         sportarten: [Sportart] = [Sportart(name: "Fussball", reihenfolge: 0)],
-        zeitslots: [Zeitslot] = [Zeitslot(bezeichnung: "09:00", reihenfolge: 0)],
+        zeitslots: [Zeitslot] = [Zeitslot(startzeit: "09:00", reihenfolge: 0)],
         spielplan: Spielplan? = nil
     ) {
         self.id = id
@@ -46,43 +46,63 @@ struct Gruppe: Codable, Identifiable, Equatable, Hashable {
 struct Sportart: Codable, Identifiable, Equatable, Hashable {
     let id: UUID
     var name: String
+    var standort: String?
     var reihenfolge: Int
 
-    init(id: UUID = UUID(), name: String, reihenfolge: Int) {
+    init(id: UUID = UUID(), name: String, standort: String? = nil, reihenfolge: Int) {
         self.id = id
         self.name = name
+        self.standort = standort
         self.reihenfolge = reihenfolge
     }
 }
 
 struct Zeitslot: Codable, Identifiable, Equatable, Hashable {
     let id: UUID
-    var bezeichnung: String
-    var startzeit: String?
-    var endzeit: String?
+    var startzeit: String
+    var endzeit: String
     var reihenfolge: Int
 
     init(
         id: UUID = UUID(),
-        bezeichnung: String,
-        startzeit: String? = nil,
-        endzeit: String? = nil,
+        startzeit: String = "",
+        endzeit: String = "",
         reihenfolge: Int
     ) {
         self.id = id
-        self.bezeichnung = bezeichnung
         self.startzeit = startzeit
         self.endzeit = endzeit
         self.reihenfolge = reihenfolge
     }
 
+    private enum CodingKeys: String, CodingKey {
+        case id, startzeit, endzeit, reihenfolge, bezeichnung
+    }
+
+    // Migration: ältere gespeicherte Turniere haben eine "bezeichnung" statt Start-/Endzeit.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        reihenfolge = try container.decode(Int.self, forKey: .reihenfolge)
+        let alteBezeichnung = try container.decodeIfPresent(String.self, forKey: .bezeichnung)
+        startzeit = try container.decodeIfPresent(String.self, forKey: .startzeit) ?? alteBezeichnung ?? ""
+        endzeit = try container.decodeIfPresent(String.self, forKey: .endzeit) ?? ""
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(startzeit, forKey: .startzeit)
+        try container.encode(endzeit, forKey: .endzeit)
+        try container.encode(reihenfolge, forKey: .reihenfolge)
+    }
+
     var anzeigeText: String {
-        let rawZeiten: [String?] = [startzeit, endzeit]
-        let zeiten = rawZeiten.compactMap { value -> String? in
-            guard let value, !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-            return value
-        }
-        return zeiten.isEmpty ? bezeichnung : "\(bezeichnung) (\(zeiten.joined(separator: "-")))"
+        let start = startzeit.trimmingCharacters(in: .whitespacesAndNewlines)
+        let ende = endzeit.trimmingCharacters(in: .whitespacesAndNewlines)
+        if start.isEmpty { return ende }
+        if ende.isEmpty { return start }
+        return "\(start)–\(ende)"
     }
 }
 

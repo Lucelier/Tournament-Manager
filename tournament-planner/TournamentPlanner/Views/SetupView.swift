@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SetupView: View {
     @EnvironmentObject private var viewModel: TurnierViewModel
+    @State private var zeigtHilfe = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -33,11 +34,19 @@ struct SetupView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
+            Button {
+                zeigtHilfe = true
+            } label: {
+                Label("Hilfe", systemImage: "questionmark.circle")
+            }
+            .sheet(isPresented: $zeigtHilfe) {
+                HilfeView()
+            }
             Button("Beispieldaten") {
                 viewModel.turnier.name = "Sommerturnier"
                 viewModel.turnier.gruppen = ["A", "B", "C", "D"].enumerated().map { Gruppe(name: $0.element, reihenfolge: $0.offset) }
-                viewModel.turnier.sportarten = ["Fussball", "Volleyball", "Unihockey"].enumerated().map { Sportart(name: $0.element, reihenfolge: $0.offset) }
-                viewModel.turnier.zeitslots = ["09:00", "09:30", "10:00", "10:30"].enumerated().map { Zeitslot(bezeichnung: $0.element, reihenfolge: $0.offset) }
+                viewModel.turnier.sportarten = [("Fussball", "Rasenplatz"), ("Volleyball", "Halle 1"), ("Unihockey", "Halle 2")].enumerated().map { Sportart(name: $0.element.0, standort: $0.element.1, reihenfolge: $0.offset) }
+                viewModel.turnier.zeitslots = [("09:00", "09:25"), ("09:30", "09:55"), ("10:00", "10:25"), ("10:30", "10:55")].enumerated().map { Zeitslot(startzeit: $0.element.0, endzeit: $0.element.1, reihenfolge: $0.offset) }
                 viewModel.turnier.spielplan = nil
                 viewModel.speichernStill()
             }

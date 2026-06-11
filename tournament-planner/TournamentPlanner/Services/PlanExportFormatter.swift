@@ -15,6 +15,13 @@ struct PlanExportFormatter {
         Dictionary(uniqueKeysWithValues: turnier.gruppen.map { ($0.id, $0) })
     }
 
+    func spaltenTitel(fuer sportart: Sportart) -> String {
+        guard let standort = sportart.standort?.trimmingCharacters(in: .whitespacesAndNewlines), !standort.isEmpty else {
+            return sportart.name
+        }
+        return "\(sportart.name) (\(standort))"
+    }
+
     func text(fuer paarung: Paarung) -> String {
         let gruppeA = gruppen[paarung.gruppeAId]?.name ?? "?"
         let gruppeB = gruppen[paarung.gruppeBId]?.name ?? "?"

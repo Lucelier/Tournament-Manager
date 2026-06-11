@@ -65,7 +65,7 @@ ITAM-Application: TournamentPlanner
 > Entry point: Schritt 6, Formatwahl XLSX
 
 1. A1.1: Die Export-Engine erstellt eine Arbeitsmappe mit einem Tabellenblatt «Spielplan».
-2. A1.2: Die erste Zeile enthält die Sportartnamen als Spaltenköpfe; die erste Spalte enthält die Zeitslotbezeichnungen.
+2. A1.2: Die erste Zeile enthält die Sportartnamen (mit Standort in Klammern, sofern erfasst) als Spaltenköpfe; die erste Spalte enthält die Zeitangaben der Zeitslots.
 3. A1.3: Jede Zelle enthält den Paarungstext («Gruppe A vs. Gruppe B») oder bleibt leer.
 4. A1.4: Kopfzeile und -spalte werden fett formatiert; Zellen mit Paarungen erhalten einen Rahmen.
 5. A1.5: Die Datei wird unter dem gewählten Pfad gespeichert.

@@ -23,11 +23,11 @@ erDiagram
     SPORTART {
         String id PK
         String name
+        String standort
         Integer reihenfolge
     }
     ZEITSLOT {
         String id PK
-        String bezeichnung
         String startzeit
         String endzeit
         Integer reihenfolge
@@ -89,14 +89,14 @@ struct Gruppe: Codable, Identifiable {
 struct Sportart: Codable, Identifiable {
     let id: UUID
     var name: String
+    var standort: String?   // optional, z. B. "Halle 1"
     var reihenfolge: Int
 }
 
 struct Zeitslot: Codable, Identifiable {
     let id: UUID
-    var bezeichnung: String
-    var startzeit: String?  // HH:mm
-    var endzeit: String?    // HH:mm
+    var startzeit: String   // HH:mm, Pflicht
+    var endzeit: String     // HH:mm, optional leer
     var reihenfolge: Int
 }
 

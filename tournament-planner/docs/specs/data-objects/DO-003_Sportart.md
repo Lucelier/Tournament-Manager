@@ -25,6 +25,7 @@ ITAM-Application: TournamentPlanner
 |---|---|---|---|
 | id | `String` | `yes` | Eindeutige UUID der Sportart (UUIDv4) |
 | name | `String` | `yes` | Bezeichnung der Sportart, z. B. «Fussball», «Volleyball» |
+| standort | `String` | `no` | Austragungsort der Sportart, z. B. «Halle 1», «Rasenplatz»; wird im Spielplan klein unterhalb des Spaltentitels dargestellt |
 | reihenfolge | `Integer` | `yes` | Spaltenposition im Spielplanraster (1-basiert) |
 
 ---
@@ -32,6 +33,7 @@ ITAM-Application: TournamentPlanner
 ## Value Ranges & Constraints
 
 - **name**: 1–50 Zeichen; muss innerhalb eines Turniers eindeutig sein
+- **standort**: 0–50 Zeichen; optional
 - **reihenfolge**: ≥ 1; eindeutig innerhalb eines Turniers
 
 ---

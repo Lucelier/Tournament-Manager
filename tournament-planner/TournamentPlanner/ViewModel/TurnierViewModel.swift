@@ -80,8 +80,8 @@ final class TurnierViewModel: ObservableObject {
         if turnier.sportarten.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
             meldungen.append("Alle Sportarten benötigen einen Namen")
         }
-        if turnier.zeitslots.contains(where: { $0.bezeichnung.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
-            meldungen.append("Alle Zeitslots benötigen eine Bezeichnung")
+        if turnier.zeitslots.contains(where: { $0.startzeit.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
+            meldungen.append("Alle Zeitslots benötigen eine Startzeit")
         }
         meldungen.append(contentsOf: Array(Set(gruppenValidierungsfehler.values)).sorted())
         return meldungen
@@ -157,7 +157,7 @@ final class TurnierViewModel: ObservableObject {
     }
 
     func addZeitslot() {
-        turnier.zeitslots.append(Zeitslot(bezeichnung: "", reihenfolge: turnier.zeitslots.count))
+        turnier.zeitslots.append(Zeitslot(reihenfolge: turnier.zeitslots.count))
         speichernStill()
     }
 

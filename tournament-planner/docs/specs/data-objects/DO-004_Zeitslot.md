@@ -24,8 +24,7 @@ ITAM-Application: TournamentPlanner
 | Attribute | Type | Required | Description |
 |---|---|---|---|
 | id | `String` | `yes` | Eindeutige UUID des Zeitslots (UUIDv4) |
-| bezeichnung | `String` | `yes` | Anzeigename, z. B. «09:00–09:30», «Runde 1» |
-| startzeit | `String` | `no` | Optionaler Startzeitpunkt im Format HH:mm |
+| startzeit | `String` | `yes` | Startzeitpunkt im Format HH:mm; dient als Zeilenbeschriftung im Spielplanraster |
 | endzeit | `String` | `no` | Optionaler Endzeitpunkt im Format HH:mm |
 | reihenfolge | `Integer` | `yes` | Zeilenposition im Spielplanraster (1-basiert) |
 
@@ -33,7 +32,6 @@ ITAM-Application: TournamentPlanner
 
 ## Value Ranges & Constraints
 
-- **bezeichnung**: 1–50 Zeichen; muss innerhalb eines Turniers eindeutig sein
 - **startzeit / endzeit**: Format HH:mm (24h); wenn beide angegeben, muss endzeit > startzeit sein
 - **reihenfolge**: ≥ 1; eindeutig innerhalb eines Turniers
 

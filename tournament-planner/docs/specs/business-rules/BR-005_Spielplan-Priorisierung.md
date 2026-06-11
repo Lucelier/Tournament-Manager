@@ -22,7 +22,7 @@ ITAM-Application: TournamentPlanner
 
 ## Rule
 
-> Die Planungs-Engine optimiert den Spielplan nach einer festen Prioritätsreihenfolge. Eine niedrigere Priorität darf nur verbessert werden, wenn dadurch keine Lösung mit höherer Priorität verschlechtert wird.
+> Die Planungs-Engine optimiert den Spielplan nach einer festen Prioritätsreihenfolge. Eine niedrigere Priorität darf nur verbessert werden, wenn dadurch keine Lösung mit höherer Priorität verschlechtert wird. Die Prioritäten gelten für den Vergleich vollständiger Spielpläne (`PlanBewertung`); innerhalb der Planerstellung ist die Belegung aller regelkonform belegbaren Zellen verpflichtend (siehe Phase 2).
 
 Dabei gilt BR-004 (Zeitslot-Konflikt) jederzeit als harte Bedingung und darf niemals verletzt werden.
 
@@ -61,6 +61,8 @@ Innerhalb von Phase 2 gelten folgende Unterprioritäten:
 
 Sportartwiederholungen sind in dieser Phase zulässig.
 
+Gegnerwiederholungen sind in dieser Phase ebenfalls zulässig: Jede regelkonform belegbare Zelle muss belegt werden; eine Zelle darf nicht leer bleiben, um eine Gegnerwiederholung zu vermeiden. Die dabei entstehenden Gegnerwiederholungen werden minimiert.
+
 ---
 
 ## Condition & Consequence
@@ -84,7 +86,8 @@ Sportartwiederholungen sind in dieser Phase zulässig.
 * Wenn die Eingabedaten eine vollständige Sportarten-Abdeckung strukturell nicht erlauben (z. B. zu wenige Zeitslots oder ungünstige Gruppenzahlen), wird die bestmögliche Abdeckung erzielt.
 * Erst wenn mehrere Pläne hinsichtlich der Sportarten-Abdeckung gleichwertig sind, wird die Anzahl der Gegnerwiederholungen als Vergleichskriterium verwendet.
 * Erst wenn auch die Gegnerwiederholungen gleichwertig sind, wird die Füllrate als Vergleichskriterium verwendet.
-* Die Priorisierung ist strikt lexikographisch. Eine Verbesserung einer niedrigeren Priorität darf niemals zu einer Verschlechterung einer höheren Priorität führen.
+* Die Priorisierung ist strikt lexikographisch und bezieht sich auf den Vergleich vollständiger Pläne. Die Belegungspflicht in Phase 2 gilt dabei nicht als Verletzung: Innerhalb eines Plans werden stets alle belegbaren Zellen belegt; minimiert werden die dabei entstehenden Gegnerwiederholungen.
+* Die Engine darf den fertigen Plan lokal verbessern (z. B. eine wiederholte Paarung durch eine noch ungespielte ersetzen), sofern Sportarten-Abdeckung und Füllrate dadurch nicht sinken.
 
 ---
 

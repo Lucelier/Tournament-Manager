@@ -5,6 +5,7 @@ struct SpielplanView: View {
     @EnvironmentObject private var viewModel: TurnierViewModel
     @State private var zeigtExport = false
     @State private var bestaetigeZurueck = false
+    @State private var zeigtHilfe = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -46,6 +47,14 @@ struct SpielplanView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
+            Button {
+                zeigtHilfe = true
+            } label: {
+                Label("Hilfe", systemImage: "questionmark.circle")
+            }
+            .sheet(isPresented: $zeigtHilfe) {
+                HilfeView()
+            }
             Button("Zurück") {
                 bestaetigeZurueck = true
             }
@@ -65,7 +74,7 @@ struct SpielplanView: View {
             GridRow {
                 headerCell("")
                 ForEach(viewModel.sortierteSportarten) { sportart in
-                    headerCell(sportart.name)
+                    headerCell(sportart.name, untertitel: sportart.standort)
                 }
             }
 
@@ -82,13 +91,21 @@ struct SpielplanView: View {
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(.separator))
     }
 
-    private func headerCell(_ text: String) -> some View {
-        Text(text)
-            .font(.headline)
-            .lineLimit(2)
-            .frame(width: 170, height: 54, alignment: .center)
-            .background(Color(nsColor: .controlBackgroundColor))
-            .border(Color(nsColor: .separatorColor), width: 0.5)
+    private func headerCell(_ text: String, untertitel: String? = nil) -> some View {
+        VStack(spacing: 2) {
+            Text(text)
+                .font(.headline)
+                .lineLimit(untertitel == nil ? 2 : 1)
+            if let untertitel, !untertitel.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                Text(untertitel)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+        }
+        .frame(width: 170, height: 54, alignment: .center)
+        .background(Color(nsColor: .controlBackgroundColor))
+        .border(Color(nsColor: .separatorColor), width: 0.5)
     }
 
     @ViewBuilder
