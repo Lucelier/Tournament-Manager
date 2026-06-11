@@ -1,5 +1,4 @@
 ---
-
 template-version: 1.0.0
 linkservice-id: "urn:pfch:git:01932a4b-4c5d-7e6f-1a2b-3c4d5e6f7a8n:req/v1?anchor=true"
 type: Business Rule
@@ -8,7 +7,7 @@ completeness: Intermediate
 responsible: "project-owner"
 keywords: planning, priority, coverage, opponent-diversity, fill, algorithm
 ITAM-Application: TournamentPlanner
------------------------------------
+---
 
 # [BR-005 – Spielplan-Priorisierung](https://linkservice.pnet.ch/link/urn:pfch:git:01932a4b-4c5d-7e6f-1a2b-3c4d5e6f7a8n:req/v1)
 
